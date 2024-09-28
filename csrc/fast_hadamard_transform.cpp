@@ -70,7 +70,7 @@ void set_hadamard_params(HadamardParamsBase &params,
 
 
 at::Tensor
-fast_hadamard_transform(at::Tensor &x, float scale) {
+fast_hadamard_transform(at::Tensor &x, float scale, bool inplace = false) {
     auto input_type = x.scalar_type();
     TORCH_CHECK(input_type == at::ScalarType::Float || input_type == at::ScalarType::Half || input_type == at::ScalarType::BFloat16);
 
@@ -94,7 +94,7 @@ fast_hadamard_transform(at::Tensor &x, float scale) {
     TORCH_CHECK(dim % 8 == 0, "fast_hadamard_transform only supports hidden dimension divisible by 8 for now");
     TORCH_CHECK(dim <= 32768, "fast_hadamard_transform only supports hidden dimension at most 32768 for now");
 
-    at::Tensor out = torch::empty_like(x);
+    at::Tensor out = inplace ? x : torch::empty_like(x);
 
     HadamardParamsBase params;
     set_hadamard_params(params, batch_size, dim, 1, x, out, scale);
@@ -113,7 +113,7 @@ fast_hadamard_transform(at::Tensor &x, float scale) {
 }
 
 at::Tensor
-fast_hadamard_transform_12N(at::Tensor &x, float scale) {
+fast_hadamard_transform_12N(at::Tensor &x, float scale, bool inplace = false) {
     auto input_type = x.scalar_type();
     TORCH_CHECK(input_type == at::ScalarType::Float || input_type == at::ScalarType::Half || input_type == at::ScalarType::BFloat16);
 
@@ -137,7 +137,7 @@ fast_hadamard_transform_12N(at::Tensor &x, float scale) {
     TORCH_CHECK(dim % (4 * 12) == 0, "fast_hadamard_transform_12N only supports hidden dimension divisible by 48 for now");
     TORCH_CHECK(dim <= 12 * 1024, "fast_hadamard_transform_12N only supports hidden dimension at most 12288 for now");
 
-    at::Tensor out = torch::empty_like(x);
+    at::Tensor out = inplace ? x : torch::empty_like(x);
 
     HadamardParamsBase params;
     set_hadamard_params(params, batch_size, dim, 12, x, out, scale);
@@ -156,7 +156,7 @@ fast_hadamard_transform_12N(at::Tensor &x, float scale) {
 }
 
 at::Tensor
-fast_hadamard_transform_20N(at::Tensor &x, float scale) {
+fast_hadamard_transform_20N(at::Tensor &x, float scale, bool inplace = false) {
     auto input_type = x.scalar_type();
     TORCH_CHECK(input_type == at::ScalarType::Float || input_type == at::ScalarType::Half || input_type == at::ScalarType::BFloat16);
 
@@ -180,7 +180,7 @@ fast_hadamard_transform_20N(at::Tensor &x, float scale) {
     TORCH_CHECK(dim % (4 * 20) == 0, "fast_hadamard_transform_20N only supports hidden dimension divisible by 80 for now");
     TORCH_CHECK(dim <= 20 * 1024, "fast_hadamard_transform_20N only supports hidden dimension at most 20480 for now");
 
-    at::Tensor out = torch::empty_like(x);
+    at::Tensor out = inplace ? x : torch::empty_like(x);
 
     HadamardParamsBase params;
     set_hadamard_params(params, batch_size, dim, 20, x, out, scale);
@@ -199,7 +199,7 @@ fast_hadamard_transform_20N(at::Tensor &x, float scale) {
 }
 
 at::Tensor
-fast_hadamard_transform_28N(at::Tensor &x, float scale) {
+fast_hadamard_transform_28N(at::Tensor &x, float scale, bool inplace = false) {
     auto input_type = x.scalar_type();
     TORCH_CHECK(input_type == at::ScalarType::Float || input_type == at::ScalarType::Half || input_type == at::ScalarType::BFloat16);
 
@@ -224,7 +224,7 @@ fast_hadamard_transform_28N(at::Tensor &x, float scale) {
     // TORCH_CHECK(dim <= 28 * 1024, "fast_hadamard_transform_28N only supports hidden dimension at most 28672 for now");
     TORCH_CHECK(dim <= 28 * 2048, "fast_hadamard_transform_28N only supports hidden dimension at most 28672 for now");
 
-    at::Tensor out = torch::empty_like(x);
+    at::Tensor out = inplace ? x : torch::empty_like(x);
 
     HadamardParamsBase params;
     set_hadamard_params(params, batch_size, dim, 28, x, out, scale);
@@ -243,7 +243,7 @@ fast_hadamard_transform_28N(at::Tensor &x, float scale) {
 }
 
 at::Tensor
-fast_hadamard_transform_40N(at::Tensor &x, float scale) {
+fast_hadamard_transform_40N(at::Tensor &x, float scale, bool inplace = false) {
     auto input_type = x.scalar_type();
     TORCH_CHECK(input_type == at::ScalarType::Float || input_type == at::ScalarType::Half || input_type == at::ScalarType::BFloat16);
 
@@ -267,7 +267,7 @@ fast_hadamard_transform_40N(at::Tensor &x, float scale) {
     TORCH_CHECK(dim % (4 * 40) == 0, "fast_hadamard_transform_40N only supports hidden dimension divisible by 112 for now");
     TORCH_CHECK(dim <= 40 * 2048, "fast_hadamard_transform_40N only supports hidden dimension at most 4096 for now");
 
-    at::Tensor out = torch::empty_like(x);
+    at::Tensor out = inplace ? x : torch::empty_like(x);
 
     HadamardParamsBase params;
     set_hadamard_params(params, batch_size, dim, 40, x, out, scale);
